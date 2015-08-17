@@ -15,29 +15,45 @@
 
 def invert_dict_old(d):
     inverse = dict()
-    for key in d:
-        val = d[key]
-        if val not in inverse:
-            inverse[val] = [key]
-        else:
-            inverse[val].append(key)
+    inverse = {d[key]:key if d[key] not in inverse else inverse[d[key]].append(key) for key in d}
+    
     return inverse
 
-
 def invert_dict_new(d):
-    pass
+    invert = invert_dict_old(d)
+    key_list = invert.keys()
+    range_limit = int(max(key_list))
+    dict_new = {c:invert.get(c,'') for c in range(range_limit)}
+
+    return dict_new
 
 
 def print_hist_newest(d):
-    pass
+    for k in d:
+        print str(k) + ": " + d[k]
 
 ##############################################################################
 ################### INSERT COMPLETED CODE FROM 11_02 BELOW: ##################
 ##############################################################################
+pledge_histogram = {}
 
+def histogram_old(s):
+    d = dict()
+    for c in s:
+        d[c] = 1 + d.get(c,0)
+    return d
 
+def histogram_new(s):
+    new_hist = histogram_old(s)
+    return new_hist
 
-
+def get_pledge_list():
+    """ Opens pledge.txt and converts to a list, each item is a word in 
+    the order it appears in the original file. returns the list.
+    """
+    with open('pledge.txt',"r") as handler:
+        pledge_list = handler.read().split()
+    return pledge_list
 ##############################################################################
 ################### INSERT COMPLETED CODE FROM 11_02 ABOVE: ##################
 ##############################################################################
