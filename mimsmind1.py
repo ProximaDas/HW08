@@ -22,9 +22,8 @@ def mimsmind1():
 
 		while guess_counter < maxrounds:
 			# Compare random_number and user's guess
-			if guess != random_number:
+			if int(guess) != int(random_number):
 				guess,guess_counter = promp_user(bull_and_cow(guess,random_number) + " Try again: ",guess_counter,num_length)
-
 			else:
 				print "Congratulations. You've guessed the number in %i tries." % (guess_counter)
 				break
@@ -60,12 +59,14 @@ def generate_random_n(n):
 
 def bull_and_cow(input,solution):
 	feedback = {'bull':0,'cow':0}
+	solution = str(solution)
+	solution_list = {a:list(a.start() for a in re.finditer(a,solution)) for a in solution}
 	for i in range(len(input)):
 		if input[i] in solution:
 			# Check if it's a bull/cow
-			if solution.find(input[i]) == i:
+			if i in solution_list[input[i]]:
 				feedback['bull'] += 1
-			else:
+			elif input[i] in solution_list and i not in solution_list[input[i]] and input != len(input) * input[0]:
 				feedback['cow'] += 1
 	feedback_string = "%i bull(s), %i cow(s)." % (feedback['bull'], feedback['cow'])
 	return feedback_string
